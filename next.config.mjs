@@ -1,8 +1,11 @@
-const isProd = process.env.NODE_ENV === 'production';
+// next.config.mjs
+const repo = 'twow-classic-randomizer';
 
+/** @type {import('next').NextConfig} */
 export default {
-  output: 'export',                  // static export
-  basePath: '/twow-classic-randomizer',
-  assetPrefix: '/twow-classic-randomizer/',
-  images: { unoptimized: true },     // для GitHub Pages
+  output: 'export',                 // генерировать статический сайт
+  basePath: `/${repo}`,             // префикс пути для GitHub Pages
+  assetPrefix: `/${repo}/`,         // префикс для статики
+  images: { unoptimized: true },    // без server-side оптимизации
+  trailingSlash: true,
 };
