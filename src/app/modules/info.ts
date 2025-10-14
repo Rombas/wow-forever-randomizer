@@ -1,22 +1,22 @@
 export const allianceCombinations: { [key: string]: string[] } = {
-    priest: ["human", "dwarf", "night elf"],
-    mage: ["gnome", "human"],
+    priest: ["human", "dwarf", "night elf", "high elf"],
+    mage: ["gnome", "human", "dwarf", "high elf"],
     warlock: ["gnome", "human"],
     druid: ["night elf"],
-    rogue: ["human", "night elf", "gnome", "dwarf"],
-    hunter: ["night elf", "dwarf"],
-    paladin: ["human", "dwarf"],
-    warrior: ["human", "gnome", "dwarf", "night elf"],
+    rogue: ["human", "night elf", "gnome", "dwarf", "high elf"],
+    hunter: ["night elf", "dwarf", "human", "gnome", "high elf"],
+    paladin: ["human", "dwarf", "high elf"],
+    warrior: ["human", "gnome", "dwarf", "night elf", "high elf"],
 };
 
 export const hordeCombinations: { [key: string]: string[] } = {
     priest: ["undead", "troll"],
-    mage: ["undead", "troll"],
-    warlock: ["undead", "orc"],
+    mage: ["undead", "troll", "orc", "goblin"],
+    warlock: ["undead", "orc", "troll", "goblin"],
     druid: ["tauren"],
-    rogue: ["undead", "troll", "orc"],
-    hunter: ["troll", "orc"],
-    warrior: ["undead", "troll", "orc", "tauren"],
+    rogue: ["undead", "troll", "orc", "goblin"],
+    hunter: ["troll", "orc", "undead", "tauren", "goblin"],
+    warrior: ["undead", "troll", "orc", "tauren", "goblin"],
     shaman: ["troll", "orc", "tauren"],
 };
 
@@ -33,25 +33,27 @@ export const specs: { [key: string]: string[] } = {
 };
 
 export const professions: { [key: string]: string[] } = {
-    priest: ["alchemy", "engineering", "tailoring"],
-    mage: ["alchemy", "engineering", "tailoring"],
-    warlock: ["alchemy", "engineering", "tailoring"],
-    druid: ["alchemy", "engineering", "leatherworking", "tailoring"],
-    rogue: ["alchemy", "engineering", "leatherworking"],
-    hunter: ["alchemy", "engineering", "leatherworking"],
+    priest: ["alchemy", "engineering", "tailoring", "jewelcrafting"],
+    mage: ["alchemy", "engineering", "tailoring", "jewelcrafting"],
+    warlock: ["alchemy", "engineering", "tailoring", "jewelcrafting"],
+    druid: ["alchemy", "engineering", "leatherworking", "tailoring", "jewelcrafting"],
+    rogue: ["alchemy", "engineering", "leatherworking", "jewelcrafting"],
+    hunter: ["alchemy", "engineering", "leatherworking", "jewelcrafting"],
     paladin: [
         "alchemy",
         "engineering",
         "enchanting",
         "blacksmithing",
+        
         "tailoring",
     ],
-    warrior: ["alchemy", "engineering", "blacksmithing"],
+    warrior: ["alchemy", "engineering", "blacksmithing", "jewelcrafting"],
     shaman: [
         "alchemy",
         "engineering",
         "blacksmithing",
         "leatherworking",
+        "jewelcrafting",
         "tailoring",
     ],
 };
@@ -68,9 +70,9 @@ export const wowClasses = [
     "shaman",
 ];
 
-export const allianceRaces = ["human", "dwarf", "gnome", "night elf"];
+export const allianceRaces = ["human", "dwarf", "gnome", "night elf" , "high elf"];
 
-export const hordeRaces = ["undead", "troll", "tauren", "orc"];
+export const hordeRaces = ["undead", "troll", "tauren", "orc", "goblin"];
 
 export const mainProfessions = [
     "alchemy",
@@ -79,4 +81,5 @@ export const mainProfessions = [
     "leatherworking",
     "enchanting",
     "blacksmithing",
+    "jewelcrafting",
 ];
