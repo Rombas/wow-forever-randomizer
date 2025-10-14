@@ -509,9 +509,9 @@ export default function Home() {
                 {/* footer with current author, year and link to github*/}
                 <div className="flex justify-center items-center h-16">
                     <p>
-                        ©{new Date().getFullYear()} by Ebaynissen
+                        ©{new Date().getFullYear()} by Rombas
                         <a
-                            href="https://www.github.com/ebaynissen/wow-classic-randomizer"
+                            href="https://github.com/Rombas/twow-classic-randomizer"
                             className="underline px-2"
                             target="_blank"
                         >
