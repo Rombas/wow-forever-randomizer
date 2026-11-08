@@ -65,7 +65,7 @@ export default function Home() {
     const [wowClass, setWowClass] = useState("random");
     const [race, setRace] = useState("random");
     const [skyborne, setSkyborne] = useState("random");
-    const [spec, setSpec] = useState("no");
+    const [spec, setSpec] = useState("random");
     const [profession, setProfession] = useState("random");
     const [final, setFinal] = useState(["", "", "", "", ""]);
 
@@ -319,7 +319,7 @@ export default function Home() {
                                 value={wowClass}
                                 onChange={(value) => {
                                     setWowClass(value);
-                                    setSpec("no");
+                                    setSpec(value === "no" ? "no" : "random");
                                 }}
                             />
                         </Field>
