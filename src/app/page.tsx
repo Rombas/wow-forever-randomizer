@@ -208,10 +208,14 @@ export default function Home() {
                 : "";
         let randomProfession = "";
         if (profession === "random" && randomClass !== "") {
-            randomProfession =
-                professions[randomClass][
-                    Math.floor(Math.random() * professions[randomClass].length)
-                ];
+            // With no spec rolled, anything that fits one of the class's specs.
+            randomProfession = pick(
+                randomSpec !== ""
+                    ? professions[randomClass][randomSpec]
+                    : Array.from(
+                          new Set(Object.values(professions[randomClass]).flat())
+                      )
+            );
         } else if (profession === "random" && randomClass === "") {
             randomProfession =
                 mainProfessions[

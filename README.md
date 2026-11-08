@@ -12,6 +12,10 @@ All game data is in [`src/app/modules/info.ts`](src/app/modules/info.ts): patch 
 variants, 9 classes. Skyborne needs a paid upgrade pack, so the page can leave it out of the
 roll. Icons are in `public/`, named after the values in `info.ts`.
 
+The profession follows the rolled class and spec, by what that character wears and does: a
+cloth caster gets Tailoring, a Feral Druid gets Leatherworking, a plate wearer gets
+Blacksmithing. With the class switched off it can be any of the six.
+
 "Guardian" and "Frost AOE" are play styles kept next to the talent trees, not trees of their
 own.
 

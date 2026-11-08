@@ -39,28 +39,60 @@ export const specs: { [key: string]: string[] } = {
     shaman: ["elemental", "enhancement", "restoration"],
 };
 
-export const professions: { [key: string]: string[] } = {
-    priest: ["alchemy", "engineering", "tailoring"],
-    mage: ["alchemy", "engineering", "tailoring"],
-    warlock: ["alchemy", "engineering", "tailoring"],
-    druid: ["alchemy", "engineering", "leatherworking", "tailoring"],
-    rogue: ["alchemy", "engineering", "leatherworking"],
-    hunter: ["alchemy", "engineering", "leatherworking"],
-    paladin: [
-        "alchemy",
-        "engineering",
-        "enchanting",
-        "blacksmithing",
-        "tailoring",
-    ],
-    warrior: ["alchemy", "engineering", "blacksmithing"],
-    shaman: [
-        "alchemy",
-        "engineering",
-        "blacksmithing",
-        "leatherworking",
-        "tailoring",
-    ],
+// The main profession has to fit the character (Roman, 2026-11-08: a Feral Druid with Tailoring
+// is wrong). It follows what the spec wears and does: cloth -> Tailoring, leather or early mail
+// -> Leatherworking, plate -> Blacksmithing, guns and explosives -> Engineering, poisons and
+// herbs -> Alchemy, magic users -> Enchanting.
+export const professions: {
+    [wowClass: string]: { [spec: string]: string[] };
+} = {
+    priest: {
+        holy: ["tailoring", "enchanting", "alchemy"],
+        shadow: ["tailoring", "enchanting", "alchemy"],
+        discipline: ["tailoring", "enchanting", "alchemy"],
+    },
+    mage: {
+        arcane: ["tailoring", "enchanting", "alchemy"],
+        fire: ["tailoring", "enchanting", "engineering"],
+        frost: ["tailoring", "enchanting", "alchemy"],
+        "frost AOE": ["tailoring", "enchanting", "alchemy"],
+    },
+    warlock: {
+        affliction: ["tailoring", "enchanting", "alchemy"],
+        demonology: ["tailoring", "enchanting", "alchemy"],
+        destruction: ["tailoring", "enchanting", "engineering"],
+    },
+    druid: {
+        balance: ["leatherworking", "alchemy"],
+        feral: ["leatherworking", "alchemy"],
+        guardian: ["leatherworking", "alchemy"],
+        restoration: ["leatherworking", "alchemy"],
+    },
+    rogue: {
+        assassination: ["alchemy", "leatherworking"],
+        combat: ["leatherworking", "engineering"],
+        subtlety: ["leatherworking", "engineering", "alchemy"],
+    },
+    hunter: {
+        "beast mastery": ["leatherworking", "alchemy"],
+        marksmanship: ["engineering", "leatherworking"],
+        survival: ["leatherworking", "engineering"],
+    },
+    paladin: {
+        holy: ["blacksmithing", "enchanting", "alchemy"],
+        protection: ["blacksmithing", "alchemy"],
+        retribution: ["blacksmithing", "enchanting"],
+    },
+    warrior: {
+        arms: ["blacksmithing", "engineering"],
+        fury: ["blacksmithing", "engineering"],
+        protection: ["blacksmithing", "engineering", "alchemy"],
+    },
+    shaman: {
+        elemental: ["leatherworking", "alchemy"],
+        enhancement: ["leatherworking", "blacksmithing"],
+        restoration: ["leatherworking", "alchemy"],
+    },
 };
 
 export const wowClasses = [
