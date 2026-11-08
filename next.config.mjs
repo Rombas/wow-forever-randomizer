@@ -1,5 +1,5 @@
 // next.config.mjs
-const repo = 'twow-classic-randomizer';
+const repo = 'wow-forever-randomizer';
 
 /** @type {import('next').NextConfig} */
 export default {

@@ -25,10 +25,46 @@ import clsx from "clsx";
 import { ChevronDownIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
+const randomOrNah = ["random", "no"];
+
+function YesNo({
+    value,
+    onChange,
+}: {
+    value: string;
+    onChange: (value: string) => void;
+}) {
+    return (
+        <RadioGroup
+            value={value}
+            onChange={onChange}
+            className="flex flex-row space-x-2 justify-between"
+        >
+            {randomOrNah.map((val) => (
+                <Radio
+                    key={val}
+                    value={val}
+                    className="group relative flex flex-grow cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-white shadow-md transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
+                >
+                    <div className="flex w-full items-center justify-between">
+                        <div className="flex items-center justify-between">
+                            <div className="text-sm/6 font-medium">
+                                {val === "random" ? "Yes" : "No"}
+                            </div>
+                        </div>
+                        <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
+                    </div>
+                </Radio>
+            ))}
+        </RadioGroup>
+    );
+}
+
 export default function Home() {
     const [faction, setFaction] = useState("random");
     const [wowClass, setWowClass] = useState("random");
     const [race, setRace] = useState("random");
+    const [skyborne, setSkyborne] = useState("random");
     const [spec, setSpec] = useState("no");
     const [profession, setProfession] = useState("random");
     const [final, setFinal] = useState(["", "", "", "", ""]);
@@ -45,8 +81,6 @@ export default function Home() {
         console.log(faction, race, wowClass, spec, profession);
     };
 
-    const randomOrNah = ["random", "no"];
-
     function emptyOrImg(arg: String) {
         if (arg === "no") {
             return "empty.jpg";
@@ -58,11 +92,11 @@ export default function Home() {
             return "frost.png";
         }
 
-        if (spec === "protection" && wowClass === "warrior") {
+        if (spec === "protection" && final[3] === "warrior") {
             return "protectionW.png";
         }
 
-        if (spec === "holy" && wowClass === "paladin") {
+        if (spec === "holy" && final[3] === "paladin") {
             return "holyP.png";
         }
 
@@ -70,15 +104,10 @@ export default function Home() {
     }
 
     function capitalize(word: string): string {
-        if (word === "") return "";
-        if (word.split(" ").length > 1) {
-            return (
-                capitalize(word.split(" ")[0]) +
-                " " +
-                capitalize(word.split(" ")[1])
-            );
-        }
-        return word.charAt(0).toUpperCase() + word.slice(1);
+        return word
+            .split(" ")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
     }
 
     function description() {
@@ -147,30 +176,29 @@ export default function Home() {
                           )
                       ]
                 : "";
+        const pick = (list: string[]) =>
+            list[Math.floor(Math.random() * list.length)];
+        const allowed = (races: string[]) =>
+            skyborne === "random"
+                ? races
+                : races.filter((r) => !r.endsWith("skyborne"));
         let randomRace = "";
         if (race === "no") {
             randomRace = "";
         } else if (randomClass === "") {
-            randomRace =
-                randomFaction === "alliance"
-                    ? allianceRaces[
-                          Math.floor(Math.random() * allianceRaces.length)
-                      ]
-                    : hordeRaces[Math.floor(Math.random() * hordeRaces.length)];
-        } else if (randomFaction === "alliance") {
-            randomRace =
-                allianceCombinations[randomClass][
-                    Math.floor(
-                        Math.random() * allianceCombinations[randomClass].length
-                    )
-                ];
+            randomRace = pick(
+                allowed(
+                    randomFaction === "alliance" ? allianceRaces : hordeRaces
+                )
+            );
         } else {
-            randomRace =
-                hordeCombinations[randomClass][
-                    Math.floor(
-                        Math.random() * hordeCombinations[randomClass].length
-                    )
-                ];
+            randomRace = pick(
+                allowed(
+                    (randomFaction === "alliance"
+                        ? allianceCombinations
+                        : hordeCombinations)[randomClass]
+                )
+            );
         }
         let randomSpec =
             spec === "random"
@@ -217,7 +245,7 @@ export default function Home() {
                 >
                     <Fieldset className="space-y-4 rounded-xl bg-white/5 p-6 sm:p-10">
                         <Legend className="text-base/7 font-semibold text-white">
-                            WoW Classic Character Randomizer
+                            WoW Forever Character Randomizer
                         </Legend>
                         <Field>
                             <Label className="text-sm/6 font-medium text-white">
@@ -257,33 +285,28 @@ export default function Home() {
                             <Description className="text-sm/6 text-white/50">
                                 Do you want to randomize your character&apos;s race?
                             </Description>
-                            <RadioGroup
+                            <YesNo
                                 value={race}
                                 onChange={(value) => {
                                     setRace(value);
                                 }}
-                                className="flex flex-row space-x-2 justify-between"
-                            >
-                                {randomOrNah.map((val) => (
-                                    <Radio
-                                        key={val}
-                                        value={val}
-                                        className="group relative flex flex-grow cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-white shadow-md transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
-                                    >
-                                        <div className="flex w-full items-center justify-between">
-                                            <div className="flex items-center justify-between">
-                                                <div className="text-sm/6 font-medium">
-                                                    {val === "random"
-                                                        ? "Yes"
-                                                        : "No"}
-                                                </div>
-                                            </div>
-                                            <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
-                                        </div>
-                                    </Radio>
-                                ))}
-                            </RadioGroup>
+                            />
                         </Field>
+                        {race !== "no" && (
+                            <Field>
+                                <Label className="text-sm/6 font-medium text-white">
+                                    Skyborne
+                                </Label>
+                                <Description className="text-sm/6 text-white/50">
+                                    Can the race be Skyborne? It needs a paid
+                                    upgrade pack.
+                                </Description>
+                                <YesNo
+                                    value={skyborne}
+                                    onChange={setSkyborne}
+                                />
+                            </Field>
+                        )}
                         <Field>
                             <Label className="text-sm/6 font-medium text-white">
                                 Character Class
@@ -292,33 +315,13 @@ export default function Home() {
                                 Do you want to randomize your character&apos;s
                                 class?
                             </Description>
-                            <RadioGroup
+                            <YesNo
                                 value={wowClass}
                                 onChange={(value) => {
                                     setWowClass(value);
                                     setSpec("no");
                                 }}
-                                className="flex flex-row space-x-2 justify-between"
-                            >
-                                {randomOrNah.map((val) => (
-                                    <Radio
-                                        key={val}
-                                        value={val}
-                                        className="group relative flex flex-grow cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-white shadow-md transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
-                                    >
-                                        <div className="flex w-full items-center justify-between">
-                                            <div className="flex items-center justify-between">
-                                                <div className="text-sm/6 font-medium">
-                                                    {val === "random"
-                                                        ? "Yes"
-                                                        : "No"}
-                                                </div>
-                                            </div>
-                                            <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
-                                        </div>
-                                    </Radio>
-                                ))}
-                            </RadioGroup>
+                            />
                         </Field>
                         {wowClass !== "no" && (
                             <Field>
@@ -329,30 +332,10 @@ export default function Home() {
                                     Do you want to randomize your class
                                     specialization?
                                 </Description>
-                                <RadioGroup
+                                <YesNo
                                     value={spec}
                                     onChange={(value) => setSpec(value)}
-                                    className="flex flex-row space-x-2 justify-between"
-                                >
-                                    {randomOrNah.map((val) => (
-                                        <Radio
-                                            key={val}
-                                            value={val}
-                                            className="group relative flex flex-grow cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-white shadow-md transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
-                                        >
-                                            <div className="flex w-full items-center justify-between">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="text-sm/6 font-medium">
-                                                        {val === "random"
-                                                            ? "Yes"
-                                                            : "No"}
-                                                    </div>
-                                                </div>
-                                                <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
-                                            </div>
-                                        </Radio>
-                                    ))}
-                                </RadioGroup>
+                                />
                             </Field>
                         )}
                         <Field>
@@ -362,32 +345,12 @@ export default function Home() {
                             <Description className="text-sm/6 text-white/50">
                                 Do you want to randomize your main profession?
                             </Description>
-                            <RadioGroup
+                            <YesNo
                                 value={profession}
                                 onChange={(value) => {
                                     setProfession(value);
                                 }}
-                                className="flex flex-row space-x-2 justify-between"
-                            >
-                                {randomOrNah.map((val) => (
-                                    <Radio
-                                        key={val}
-                                        value={val}
-                                        className="group relative flex flex-grow cursor-pointer rounded-lg bg-white/5 py-4 px-5 text-white shadow-md transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
-                                    >
-                                        <div className="flex w-full items-center justify-between">
-                                            <div className="flex items-center justify-between">
-                                                <div className="text-sm/6 font-medium">
-                                                    {val === "random"
-                                                        ? "Yes"
-                                                        : "No"}
-                                                </div>
-                                            </div>
-                                            <CheckCircleIcon className="size-6 fill-white opacity-0 transition group-data-[checked]:opacity-100" />
-                                        </div>
-                                    </Radio>
-                                ))}
-                            </RadioGroup>
+                            />
                         </Field>
 
                         <Button
@@ -409,7 +372,7 @@ export default function Home() {
                             </p>
                             <div className="flex flex-row space-x-8">
                                 <div className="flex flex-col items-center w-28">
-                                    <p className="font-semibold">
+                                    <p className="font-semibold text-center">
                                         {final[0] === ""
                                             ? "Faction"
                                             : capitalize(final[0])}
@@ -427,7 +390,7 @@ export default function Home() {
                                     />
                                 </div>
                                 <div className="flex flex-col items-center w-28">
-                                    <p className="font-semibold">
+                                    <p className="font-semibold text-center">
                                         {final[1] === ""
                                             ? "Race"
                                             : capitalize(final[1])}
@@ -447,7 +410,7 @@ export default function Home() {
                             </div>
                             <div className="flex flex-row space-x-8">
                                 <div className="flex flex-col items-center w-28">
-                                    <p className="font-semibold">
+                                    <p className="font-semibold text-center">
                                         {final[3] === ""
                                             ? "Class"
                                             : capitalize(final[3])}
@@ -465,7 +428,7 @@ export default function Home() {
                                     />
                                 </div>
                                 <div className="flex flex-col items-center w-28">
-                                    <p className="font-semibold">
+                                    <p className="font-semibold text-center">
                                         {final[2] === ""
                                             ? "Spec"
                                             : capitalize(final[2])}
@@ -484,7 +447,7 @@ export default function Home() {
                                 </div>
                             </div>
                             <div className="flex flex-col items-center w-28">
-                                <p className="font-semibold">
+                                <p className="font-semibold text-center">
                                     {final[4] === ""
                                         ? "Profession"
                                         : capitalize(final[4])}
@@ -511,7 +474,7 @@ export default function Home() {
                     <p>
                         ©{new Date().getFullYear()} by Rombas
                         <a
-                            href="https://github.com/Rombas/twow-classic-randomizer"
+                            href="https://github.com/Rombas/wow-forever-randomizer"
                             className="underline px-2"
                             target="_blank"
                         >

@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "WoW Classic Character Randomizer",
-    description: "A randomizer for World of Warcraft Classic characters.",
+    title: "WoW Forever Character Randomizer",
+    description: "A randomizer for World of Warcraft: Forever characters.",
 };
 
 export default function RootLayout({

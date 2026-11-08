@@ -2,7 +2,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 export default {
   output: 'export',                  // static export
-  basePath: '/twow-classic-randomizer',
-  assetPrefix: '/twow-classic-randomizer/',
+  basePath: '/wow-forever-randomizer',
+  assetPrefix: '/wow-forever-randomizer/',
   images: { unoptimized: true },     // для GitHub Pages
 };

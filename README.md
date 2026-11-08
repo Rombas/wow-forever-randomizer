@@ -1,166 +1,38 @@
-# WoW Classic Randomizer (Turtle WoW edition)
+# WoW Forever Character Randomizer
 
-Генератор персонажей для World of Warcraft Classic с добавленными особенностями **Turtle WoW** (новые расы/профессии и иконки).
+Rolls a random character for World of Warcraft: Forever: faction, race, class, specialization
+and main profession. Each part can be switched off, and only combinations the game allows
+are rolled.
 
-🔗 **Demo (GitHub Pages):** [https://rombas.github.io/twow-classic-randomizer/](https://rombas.github.io/twow-classic-randomizer/)
+**Live page:** <https://rombas.github.io/wow-forever-randomizer/>
 
----
+## What it knows
 
-## 📦 Основные возможности
+All game data is in [`src/app/modules/info.ts`](src/app/modules/info.ts): patch 1.60.1, 10 race
+variants, 9 classes. Skyborne needs a paid upgrade pack, so the page can leave it out of the
+roll. Icons are in `public/`, named after the values in `info.ts`.
 
-* Случайный выбор **расы**, **класса** и **профессий**.
-* Учёт кастомных правил/ограничений Turtle WoW (если заданы в коде).
-* Обновлённые **иконки** и визуальные элементы.
-* Лёгкий запуск локально и деплой на **GitHub Pages** через Actions.
+"Guardian" and "Frost AOE" are play styles kept next to the talent trees, not trees of their
+own.
 
-## 🧰 Технологии
+## Run it
 
-* **Next.js 14** (App Router)
-* **React 18**
-* **Tailwind CSS**
-* **Headless UI** / **Heroicons**
-* TypeScript
-
----
-
-## 🚀 Быстрый старт (локально)
-
-Требования: Node.js 18+ (рекомендуется 20).
+Needs Node 20. `npm ci` works with npm 10, the version bundled with Node 20. npm 11 rejects
+this lock file.
 
 ```bash
-# Клонировать
-git clone https://github.com/Rombas/twow-classic-randomizer
-cd twow-classic-randomizer
-
-# Установить зависимости
 npm ci
-
-# Запустить dev-сервер
 npm run dev
-# Открой http://localhost:3000
 ```
 
-### Production-сборка (локально)
+The site is built with a base path, so open <http://localhost:3000/wow-forever-randomizer/>.
 
-```bash
-npm run build
-npm start
-# Открой http://localhost:3000
-```
+## Deploy
 
----
+A push to `master` runs `.github/workflows/nextjs.yml`, which builds a static export into
+`out/` and publishes it to GitHub Pages.
 
-## 🏗️ Конфигурация для GitHub Pages
+## Credits
 
-Для работы на поддомене вида `https://<username>.github.io/<repo>/` проект собран как **статический экспорт**.
-
-Файл `next.config.mjs`:
-
-```js
-const repo = 'twow-classic-randomizer';
-
-/** @type {import('next').NextConfig} */
-export default {
-  output: 'export',
-  basePath: `/${repo}`,
-  assetPrefix: `/${repo}/`,
-  images: { unoptimized: true },
-  trailingSlash: true,
-};
-```
-
-> Если используешь абсолютные пути к ассетам (например, иконкам), учитывай `basePath`/`assetPrefix`.
-
-### Скрипты в package.json
-
-```json
-{
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  }
-}
-```
-
----
-
-## 🔄 Деплой на GitHub Pages (через Actions)
-
-Pages настроены на **GitHub Actions**. Рабочий workflow лежит в `.github/workflows/` и:
-
-1. Собирает проект (`next build`).
-2. Делает **static export** (`next export`) в папку `out/`.
-3. Публикует артефакт в GitHub Pages.
-
-Минимально нужные шаги экспорта в workflow:
-
-```yaml
-- name: Build with Next.js
-  run: ${{ steps.detect-package-manager.outputs.runner }} next build
-
-- name: Export static site
-  run: ${{ steps.detect-package-manager.outputs.runner }} next export
-
-- name: Upload artifact
-  uses: actions/upload-pages-artifact@v3
-  with:
-    path: ./out
-```
-
-> В триггере стоит ветка **master**. Убедись, что дефолтная ветка репозитория совпадает с триггером workflow.
-
-После успешного ранa сайт доступен по адресу репозитория GitHub Pages (см. ссылку вверху).
-
----
-
-## 🧩 Структура проекта (упрощённо)
-
-```
-src/
-  app/              # страницы/роуты Next.js (App Router)
-  components/       # UI-компоненты
-  lib/              # утилиты/логика
-public/
-  icons/            # иконки рас/классов/профессий
-styles/             # tailwind.css и пр.
-```
-
----
-
-## 🐢 Что добавлено для Turtle WoW
-
-* Новые **расы** и **профессии** (см. исходники/данные).
-* Подключены соответствующие **иконки** (в `public/icons/...`).
-* При необходимости — кастомные ограничения комбинаций раса/класс/профессии.
-
-> Конкретный список и логика зависят от текущей реализации в коде (см. коммиты). При желании можно вынести данные/правила в отдельный модуль.
-
----
-
-## 🧪 Проверка
-
-* Открой демо и попробуй несколько генераций.
-* Проверь загрузку иконок в DevTools → Network (404 укажет на неверный путь).
-* Сверь, что генерятся только валидные комбинации (при наличии правил).
-
----
-
-## 🛠️ Трюки и подсказки
-
-* **404 на Pages**: проверь, что workflow выполняет `next export` и загружает `./out`.
-* **Иконки/стили не грузятся**: смотри `basePath`/`assetPrefix` и пути к файлам.
-* **next/image**: на Pages лучше `images.unoptimized: true`.
-
----
-
-## 🤝 Благодарности
-
-* Основано на идее/структуре проекта: [ebaynissen/wow-classic-randomizer](https://github.com/ebaynissen/wow-classic-randomizer)
-
----
-
-## 📜 License
-
-MIT.
+Based on [ebaynissen/wow-classic-randomizer](https://github.com/ebaynissen/wow-classic-randomizer).
+MIT license.
